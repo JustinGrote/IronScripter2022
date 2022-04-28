@@ -3,6 +3,9 @@ Function Get-DiskStatus
     <#
     .SYNOPSIS
     Displays the disk usage
+    
+    Inputs: MinFree - highlihts volumes with a minimum free capacity in %
+            FilterVolume - list output for single volume
     #>
 
     [CmdletBinding()]
@@ -16,7 +19,7 @@ Function Get-DiskStatus
         [String]$MinFree,
 
         [Parameter(Mandatory= $False)]
-        [String]$FilterNames
+        [String]$FilterVolumes
     )
 
     $icmParams = @{}
@@ -25,12 +28,16 @@ Function Get-DiskStatus
     if ($ComputerName) { $icmParams.HostName = $ComputerName }
     if ($Credential) { $icmParams.Credential = $Credential }
 
-    $ListOfVolumes  Invoke-Command @icmParams {
+    $ListOfVolumes  = Invoke-Command @icmParams {
          Get-Volume;
     }
 
     $ListOfVolumes | Foreach-object {
-        $_.DriveLetter
+
+
+        if ( ( $_.DriveLetter -eq $FilterVolumes ) -or $FilterVolumes -eq "" ) {
+            $_
+        }
     }
 
 }
