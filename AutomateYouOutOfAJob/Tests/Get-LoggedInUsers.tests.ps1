@@ -1,6 +1,6 @@
 Describe 'Get-LoggedInUsers' {
     BeforeAll {
-        . $PSScriptRoot/Get-LoggedInUsers.ps1
+        . $PSScriptRoot/../Public/Get-LoggedInUsers.ps1
     }
     It 'Invokes Cmmand correctly when computername is specified' {
         $cred = [PSCredential]::new(
