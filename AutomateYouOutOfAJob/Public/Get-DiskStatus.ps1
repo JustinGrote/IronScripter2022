@@ -29,7 +29,7 @@ Function Get-DiskStatus
     if ($Credential) { $icmParams.Credential = $Credential }
 
     $ListOfVolumes  = Invoke-Command @icmParams {
-         Get-Volume;
+        Get-Volume;
     }
 
     $ListOfVolumes | Foreach-object {
