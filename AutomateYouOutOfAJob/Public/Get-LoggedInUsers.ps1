@@ -1,4 +1,4 @@
-function Get-ServerStatus {
+function Get-LoggedInUsers {
     <#
     .SYNOPSIS
     Fetches the currently logged in users of the server
