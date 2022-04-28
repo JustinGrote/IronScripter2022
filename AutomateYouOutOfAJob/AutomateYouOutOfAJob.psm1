@@ -1,4 +1,4 @@
-Get-ChildItem -Path Public
+Get-ChildItem -Path $PSScriptRoot/Public
 | ForEach-Object {
     . $PSItem
 }
