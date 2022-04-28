@@ -7,7 +7,9 @@ function Get-ServerStatus {
     param(
         #The name of the computer to connect to, defaults to localhost
         [String][Alias('Hostname')]$ComputerName,
+        #The credential to use for authentication
         [PSCredential]$Credential,
+        #How many lines you wish to have displayed for Top
         [int]$Lines = 10,
         [int]$RefreshSec = 1
     )
