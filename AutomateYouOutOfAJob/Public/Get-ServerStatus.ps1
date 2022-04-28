@@ -12,15 +12,16 @@ function Get-ServerStatus {
         [int]$RefreshSec = 1
     )
 
-    while ($true) {
-        Clear-Host
-        $icmParams = @{}
+    $icmParams = @{}
 
-        #Hostname implicitly uses SSH as opposed to ComputerName, that's why we specify it here
-        if ($ComputerName) { $icmParams.HostName = $ComputerName }
-        if ($Credential) { $icmParams.Credential = $Credential }
+    #Hostname implicitly uses SSH as opposed to ComputerName, that's why we specify it here
+    if ($ComputerName) { $icmParams.HostName = $ComputerName }
+    if ($Credential) { $icmParams.Credential = $Credential }
 
-        Invoke-Command @icmParams {
+    Invoke-Command @icmParams {
+        while ($true) {
+            Clear-Host
+
             Get-Process
             | Select-Object -First 10
             | Sort-Object CPU
@@ -28,6 +29,5 @@ function Get-ServerStatus {
 
             Start-Sleep $refreshSec
         }
-
     }
 }
