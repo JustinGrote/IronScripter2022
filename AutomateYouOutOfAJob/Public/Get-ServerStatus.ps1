@@ -6,7 +6,7 @@ function Get-ServerStatus {
     [CmdletBinding()]
     param(
         #The name of the computer to connect to, defaults to localhost
-        [String]$ComputerName,
+        [String][Alias('Hostname')]$ComputerName,
         [PSCredential]$Credential,
         [int]$Lines = 10,
         [int]$RefreshSec = 1
@@ -16,7 +16,8 @@ function Get-ServerStatus {
         Clear-Host
         $icmParams = @{}
 
-        if ($ComputerName) { $icmParams.ComputerName = $ComputerName }
+        #Hostname implicitly uses SSH as opposed to ComputerName, that's why we specify it here
+        if ($ComputerName) { $icmParams.HostName = $ComputerName }
         if ($Credential) { $icmParams.Credential = $Credential }
 
         Invoke-Command @icmParams {
@@ -26,7 +27,6 @@ function Get-ServerStatus {
             | Format-Table -AutoSize
 
             Start-Sleep $refreshSec
-
         }
 
     }
