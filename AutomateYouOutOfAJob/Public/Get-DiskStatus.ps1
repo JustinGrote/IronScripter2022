@@ -1,17 +1,14 @@
-#
-#
-#
-
 Function Get-DiskStatus
 {
     <#
     .SYNOPSIS
     Displays the disk usage
     #>
+
     [CmdletBinding()]
     param(
         #The name of the computer to connect to, defaults to localhost
-        [String]$ComputerName,
+        [String][Alias('Hostname')]$ComputerName,
 
         [PSCredential]$Credential,
 
@@ -22,7 +19,15 @@ Function Get-DiskStatus
         [String]$FilterNames
     )
 
-    $ListOfVolumes = Get-Volume;
+    $icmParams = @{}
+
+    #Hostname implicitly uses SSH as opposed to ComputerName, that's why we specify it here
+    if ($ComputerName) { $icmParams.HostName = $ComputerName }
+    if ($Credential) { $icmParams.Credential = $Credential }
+
+    $ListOfVolumes  Invoke-Command @icmParams {
+         Get-Volume;
+    }
 
     $ListOfVolumes | Foreach-object {
         $_.DriveLetter
