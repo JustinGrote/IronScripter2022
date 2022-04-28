@@ -1,22 +1,14 @@
-Function Get-DiskStatus
-{
+function Get-ServerStatus {
     <#
     .SYNOPSIS
-    Displays the disk usage
+    Fetches the currently logged in users of the server
     #>
-
     [CmdletBinding()]
     param(
         #The name of the computer to connect to, defaults to localhost
         [String][Alias('Hostname')]$ComputerName,
-
-        [PSCredential]$Credential,
-
-        [Parameter(Mandatory= $False)]
-        [String]$MinFree,
-
-        [Parameter(Mandatory= $False)]
-        [String]$FilterNames
+        #The credential to use for authentication
+        [PSCredential]$Credential
     )
 
     $icmParams = @{}
@@ -25,12 +17,8 @@ Function Get-DiskStatus
     if ($ComputerName) { $icmParams.HostName = $ComputerName }
     if ($Credential) { $icmParams.Credential = $Credential }
 
-    $ListOfVolumes  Invoke-Command @icmParams {
-         Get-Volume;
+    Invoke-Command @icmParams {
+        #TODO: ANYTHING BUT THIS!
+        quser
     }
-
-    $ListOfVolumes | Foreach-object {
-        $_.DriveLetter
-    }
-
 }
